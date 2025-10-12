@@ -8,8 +8,9 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
   body { display: flex; height: 100vh; overflow: hidden; background: #f6fbff; color: #072a46; }
-  #sidebar { width: 280px; background: #fff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column; overflow-y: auto; }
-  #gamesList { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  #sidebar { width: 300px; background: #fff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column; overflow-y: auto; }
+  #sidebar h2 { font-size: 14px; padding: 10px 16px; color: #1877f2; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px; border-top: 1px solid #eee; }
+  #gamesList, .sectionList { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
   .class { display: flex; align-items: center; padding: 8px; gap: 8px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
   .class:hover { background: #f0f4ff; }
   .class.active { background: #e6f0ff; border-left: 4px solid #1877f2; }
@@ -28,12 +29,29 @@
   #frameWrap { flex: 1; position: relative; background: #000; display: flex; align-items: center; justify-content: center; }
   #gameFrame { width: 100%; height: 100%; border: none; display: none; }
   #placeholder { position: absolute; display: grid; place-items: center; color: #fff; font-size: 18px; background: rgba(0,0,0,0.5); width: 100%; height: 100%; }
+  #weeklyDrop { padding: 12px; background: #fff; border-top: 1px solid #e0e0e0; }
+  #weeklyDrop h3 { color: #1877f2; font-size: 14px; margin-bottom: 8px; }
+  iframe.weekly-frame { width: 100%; border-radius: 10px; border: none; height: 320px; }
 </style>
 </head>
 <body>
 
 <div id="sidebar">
+  <h2>New Games</h2>
   <div id="gamesList"></div>
+
+  <h2>🎃 Halloween Drop</h2>
+  <div class="sectionList" id="halloweenList"></div>
+
+  <div id="weeklyDrop">
+    <h3>🌟 Weekly Game Drop</h3>
+    <iframe data-testid="gabe-frabe" id="gabe-frabe" class="weekly-frame"
+      allowfullscreen="" allow="autoplay; fullscreen; camera; focus-without-user-activation *; monetization; gamepad; keyboard-map *; xr-spatial-tracking; clipboard-write"
+      name="appFrame" scrolling="no" sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock
+        allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin
+        allow-downloads"
+      src="https://db.quackprep.org/html/animal_crossing/index.html"></iframe>
+  </div>
 </div>
 
 <div id="main">
@@ -72,7 +90,12 @@ const games = [
   {id:'snow-rider', title:'Snow Rider 3D', subtitle:'Winter downhill run', src:'https://db.quackprep.org/html/snow_rider_3d/index.html'}
 ];
 
+const halloweenGames = [
+  {id:'forest-99', title:'Budget 99 Nights in the Forest', subtitle:'Explore the wild (Halloween drop)', src:'https://db.quackprep.org/html/99_nights_in_the_forest/index.html'}
+];
+
 const gamesList = document.getElementById('gamesList');
+const halloweenList = document.getElementById('halloweenList');
 const frame = document.getElementById('gameFrame');
 const placeholder = document.getElementById('placeholder');
 const playerTitle = document.getElementById('playerTitle');
@@ -104,6 +127,10 @@ games.forEach(game => {
   const item = makeGameItem(game);
   if(game.featured) item.style.border = '2px solid rgba(24,119,242,0.3)';
   gamesList.appendChild(item);
+});
+
+halloweenGames.forEach(game => {
+  halloweenList.appendChild(makeGameItem(game));
 });
 
 async function loadGame(game) {
@@ -141,7 +168,7 @@ fullBtn.addEventListener('click', async () => {
 
 openNewBtn.addEventListener('click', () => {
   if(!activeId) return alert('Select a game first');
-  const game = games.find(g => g.id === activeId);
+  const game = games.find(g => g.id === activeId) || halloweenGames.find(g => g.id === activeId);
   if(!game) return;
   const win = window.open('', '_blank');
   if(!win) return alert('Popup blocked — allow popups for this site');
@@ -151,13 +178,18 @@ openNewBtn.addEventListener('click', () => {
   <title>Iggle — ${game.title}</title>
   <style>
     body{margin:0;font-family:Inter,system-ui,Arial;background:#f6fbff;color:#072a46}
-    header{padding:12px 16px;background:linear-gradient(90deg,#1877f2 0%,#0b61d8 100%);color:#fff;display:flex;gap:12px;align-items:center}
+    header{padding:12px 16px;background:linear-gradient(90deg,#1877f2 0%,#0b61d8 100%);color:#fff;display:flex;gap:12px;align-items:center;justify-content:space-between}
     h1{margin:0;font-size:16px}
     iframe{width:100%;height:100vh;border:0}
+    button{background:#fff;color:#1877f2;border:none;padding:6px 12px;border-radius:6px;font-weight:600;cursor:pointer;}
   </style>
   </head><body>
-  <header><div style="width:42px;height:42px;background:#fff;border-radius:8px;display:inline-block;margin-right:10px;"></div>
-  <h1>Iggle — ${game.title}</h1></header>
+  <header>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button onclick="history.back()">⬅ Back</button>
+      <h1>Iggle — ${game.title}</h1>
+    </div>
+  </header>
   <iframe src="${game.src}" allowfullscreen allow="autoplay; fullscreen; camera; gamepad; clipboard-write"
   sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin allow-downloads"></iframe>
   </body></html>`;
@@ -167,7 +199,7 @@ openNewBtn.addEventListener('click', () => {
 
 reloadBtn.addEventListener('click', () => {
   if(!activeId) return alert('Select a game first');
-  const game = games.find(g => g.id === activeId);
+  const game = games.find(g => g.id === activeId) || halloweenGames.find(g => g.id === activeId);
   if(!game) return;
   frame.src = '';
   setTimeout(() => frame.src = game.src, 60);
