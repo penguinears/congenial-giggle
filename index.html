@@ -1,3 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iggle — Play Epic Games</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+  body { display: flex; height: 100vh; overflow: hidden; background: #f6fbff; color: #072a46; }
+  #sidebar { width: 280px; background: #fff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column; overflow-y: auto; }
+  #gamesList { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .class { display: flex; align-items: center; padding: 8px; gap: 8px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+  .class:hover { background: #f0f4ff; }
+  .class.active { background: #e6f0ff; border-left: 4px solid #1877f2; }
+  .thumb { width: 36px; height: 36px; background: #1877f2; color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+  .meta { flex: 1; display: flex; flex-direction: column; }
+  .title { font-weight: 600; font-size: 14px; }
+  .sub { font-size: 12px; color: #555; }
+  .play-btn { padding: 4px 8px; background: #1877f2; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; }
+  #main { flex: 1; display: flex; flex-direction: column; }
+  #playerBar { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: #fff; border-bottom: 1px solid #e0e0e0; }
+  #playerInfo { display: flex; flex-direction: column; }
+  #playerTitle { font-weight: 600; font-size: 16px; }
+  #playerSub { font-size: 13px; color: #555; }
+  #controls { display: flex; gap: 8px; }
+  #controls button { padding: 6px 12px; background: #1877f2; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; }
+  #frameWrap { flex: 1; position: relative; background: #000; display: flex; align-items: center; justify-content: center; }
+  #gameFrame { width: 100%; height: 100%; border: none; display: none; }
+  #placeholder { position: absolute; display: grid; place-items: center; color: #fff; font-size: 18px; background: rgba(0,0,0,0.5); width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+
+<div id="sidebar">
+  <div id="gamesList"></div>
+</div>
+
+<div id="main">
+  <div id="playerBar">
+    <div id="playerInfo">
+      <div id="playerTitle">Select a Game</div>
+      <div id="playerSub"></div>
+    </div>
+    <div id="controls">
+      <button id="fullBtn">Fullscreen</button>
+      <button id="openNewBtn">Open in New Tab</button>
+      <button id="reloadBtn">Reload</button>
+    </div>
+  </div>
+  <div id="frameWrap">
+    <iframe id="gameFrame"></iframe>
+    <div id="placeholder">Loading...</div>
+  </div>
+</div>
+
 <script>
 const games = [
   {id:'clash-royale', title:'Clash Royale', subtitle:'Official remake', src:'https://db.quackprep.org/html/clash_royale/index.html'},
@@ -27,7 +83,6 @@ const reloadBtn = document.getElementById('reloadBtn');
 const frameWrap = document.getElementById('frameWrap');
 let activeId = null;
 
-// Create sidebar item
 function makeGameItem(game) {
   const el = document.createElement('div');
   el.className = 'class';
@@ -45,14 +100,12 @@ function makeGameItem(game) {
   return el;
 }
 
-// Populate sidebar
 games.forEach(game => {
   const item = makeGameItem(game);
-  if(game.featured) item.style.border = '2px solid rgba(24,119,242,0.09)';
+  if(game.featured) item.style.border = '2px solid rgba(24,119,242,0.3)';
   gamesList.appendChild(item);
 });
 
-// Load a game
 async function loadGame(game) {
   if(activeId === game.id) return;
 
@@ -71,7 +124,7 @@ async function loadGame(game) {
 
   activeId = game.id;
   playerTitle.textContent = game.title + (game.featured ? ' — Game of the Week' : '');
-  playerSub.textContent = game.subtitle; // only subtitle, no .html
+  playerSub.textContent = game.subtitle;
 
   const el = document.querySelector(`[data-id="${game.id}"]`);
   if(el) el.classList.add('active');
@@ -79,7 +132,6 @@ async function loadGame(game) {
   frame.onload = () => { try { frame.contentWindow.focus(); } catch(e) {} };
 }
 
-// Fullscreen
 fullBtn.addEventListener('click', async () => {
   try {
     if(document.fullscreenElement) await document.exitFullscreen();
@@ -87,9 +139,8 @@ fullBtn.addEventListener('click', async () => {
   } catch(e){}
 });
 
-// Open in new tab
 openNewBtn.addEventListener('click', () => {
-  if(!activeId) return alert('Select a class first');
+  if(!activeId) return alert('Select a game first');
   const game = games.find(g => g.id === activeId);
   if(!game) return;
   const win = window.open('', '_blank');
@@ -97,7 +148,7 @@ openNewBtn.addEventListener('click', () => {
 
   const html = `<!doctype html><html><head><meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Epic Games — ${game.title}</title>
+  <title>Iggle — ${game.title}</title>
   <style>
     body{margin:0;font-family:Inter,system-ui,Arial;background:#f6fbff;color:#072a46}
     header{padding:12px 16px;background:linear-gradient(90deg,#1877f2 0%,#0b61d8 100%);color:#fff;display:flex;gap:12px;align-items:center}
@@ -106,7 +157,7 @@ openNewBtn.addEventListener('click', () => {
   </style>
   </head><body>
   <header><div style="width:42px;height:42px;background:#fff;border-radius:8px;display:inline-block;margin-right:10px;"></div>
-  <h1>Epic Games — ${game.title}</h1></header>
+  <h1>Iggle — ${game.title}</h1></header>
   <iframe src="${game.src}" allowfullscreen allow="autoplay; fullscreen; camera; gamepad; clipboard-write"
   sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin allow-downloads"></iframe>
   </body></html>`;
@@ -114,21 +165,21 @@ openNewBtn.addEventListener('click', () => {
   win.document.open(); win.document.write(html); win.document.close();
 });
 
-// Reload
 reloadBtn.addEventListener('click', () => {
-  if(!activeId) return alert('Select a class first');
+  if(!activeId) return alert('Select a game first');
   const game = games.find(g => g.id === activeId);
   if(!game) return;
   frame.src = '';
   setTimeout(() => frame.src = game.src, 60);
 });
 
-// Keyboard shortcut 'f' for fullscreen
 window.addEventListener('keydown', e => {
   if(e.key === 'f') { e.preventDefault(); fullBtn.click(); }
 });
 
-// Auto-load featured game
 const featured = games.find(g => g.featured);
 if(featured) setTimeout(() => loadGame(featured), 250);
 </script>
+
+</body>
+</html>
