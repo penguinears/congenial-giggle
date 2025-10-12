@@ -1,0 +1,134 @@
+<script>
+const games = [
+  {id:'clash-royale', title:'Clash Royale', subtitle:'Official remake', src:'https://db.quackprep.org/html/clash_royale/index.html'},
+  {id:'hollow-knight', title:'Hollow Knight', subtitle:'A platformer', src:'https://db.quackprep.org/html/hollow_knight/index.html'},
+  {id:'steal-brainrot', title:'Steal a Brainrot', subtitle:'(steal a brainrot)', src:'https://db.quackprep.org/html/steal_a_brainrot/index.html'},
+  {id:'worlds-hardest', title:"The World's Hardest Game", subtitle:'Try not to rage', src:'https://db.quackprep.org/html/theworldshardestgame/index.html'},
+  {id:'twerk-race', title:'Twerk Race 3D', subtitle:'Race-y runner', src:'https://db.quackprep.org/html/twerk_race_3d/index.html'},
+  {id:'street-fighter', title:'Street Fighter', subtitle:'Retro fighting — Game of the Week', src:'https://db.quackprep.org/html/street_fighter/index.html', featured:true},
+  {id:'temple-run', title:'Temple Run 2', subtitle:'Endless runner', src:'https://db.quackprep.org/html/temple_run_2/index.html'},
+  {id:'rocket-league', title:'Rocket League (Derby)', subtitle:'Car football', src:'https://db.quackprep.org/html/rocket_soccer_derby/index.html'},
+  {id:'thorns-balloons', title:'Thorns & Balloons', subtitle:'Pop', src:'https://db.quackprep.org/html/thorns_and_ballons/index.html'},
+  {id:'doom-1', title:'DOOM 1 (remake)', subtitle:'Classic shooter', src:'https://db.quackprep.org/html/doom_1/index.html'},
+  {id:'forest-99', title:'Budget 99 Nights in the Forest', subtitle:'Explore the wild', src:'https://db.quackprep.org/html/99_nights_in_the_forest/index.html'},
+  {id:'eagler-craft', title:'Eagler Craft', subtitle:'Minecraft-style sandbox', src:'https://db.quackprep.org/html/minecraft/index.html'},
+  {id:'bloons-td', title:'Bloons TD', subtitle:'Pop the waves', src:'https://db.quackprep.org/html/bloons_td/index.html'},
+  {id:'snow-rider', title:'Snow Rider 3D', subtitle:'Winter downhill run', src:'https://db.quackprep.org/html/snow_rider_3d/index.html'}
+];
+
+const gamesList = document.getElementById('gamesList');
+const frame = document.getElementById('gameFrame');
+const placeholder = document.getElementById('placeholder');
+const playerTitle = document.getElementById('playerTitle');
+const playerSub = document.getElementById('playerSub');
+const fullBtn = document.getElementById('fullBtn');
+const openNewBtn = document.getElementById('openNewBtn');
+const reloadBtn = document.getElementById('reloadBtn');
+const frameWrap = document.getElementById('frameWrap');
+let activeId = null;
+
+// Create sidebar item
+function makeGameItem(game) {
+  const el = document.createElement('div');
+  el.className = 'class';
+  el.dataset.id = game.id;
+  el.innerHTML = `
+    <div class="thumb">${game.title.split(' ').map(s=>s[0]).slice(0,2).join('')}</div>
+    <div class="meta">
+      <div class="title">${game.title}</div>
+      <div class="sub">${game.subtitle}</div>
+    </div>
+    <div><button class="play-btn">Play</button></div>
+  `;
+  el.querySelector('.play-btn').addEventListener('click', e => { e.stopPropagation(); loadGame(game); });
+  el.addEventListener('click', () => loadGame(game));
+  return el;
+}
+
+// Populate sidebar
+games.forEach(game => {
+  const item = makeGameItem(game);
+  if(game.featured) item.style.border = '2px solid rgba(24,119,242,0.09)';
+  gamesList.appendChild(item);
+});
+
+// Load a game
+async function loadGame(game) {
+  if(activeId === game.id) return;
+
+  const prev = document.querySelector('.class.active');
+  if(prev) prev.classList.remove('active');
+
+  placeholder.style.display = 'grid';
+  frame.style.display = 'none';
+  frame.src = '';
+
+  await new Promise(r => setTimeout(r, 80));
+
+  frame.src = game.src;
+  frame.style.display = 'block';
+  placeholder.style.display = 'none';
+
+  activeId = game.id;
+  playerTitle.textContent = game.title + (game.featured ? ' — Game of the Week' : '');
+  playerSub.textContent = game.subtitle; // only subtitle, no .html
+
+  const el = document.querySelector(`[data-id="${game.id}"]`);
+  if(el) el.classList.add('active');
+
+  frame.onload = () => { try { frame.contentWindow.focus(); } catch(e) {} };
+}
+
+// Fullscreen
+fullBtn.addEventListener('click', async () => {
+  try {
+    if(document.fullscreenElement) await document.exitFullscreen();
+    else await frameWrap.requestFullscreen();
+  } catch(e){}
+});
+
+// Open in new tab
+openNewBtn.addEventListener('click', () => {
+  if(!activeId) return alert('Select a class first');
+  const game = games.find(g => g.id === activeId);
+  if(!game) return;
+  const win = window.open('', '_blank');
+  if(!win) return alert('Popup blocked — allow popups for this site');
+
+  const html = `<!doctype html><html><head><meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Epic Games — ${game.title}</title>
+  <style>
+    body{margin:0;font-family:Inter,system-ui,Arial;background:#f6fbff;color:#072a46}
+    header{padding:12px 16px;background:linear-gradient(90deg,#1877f2 0%,#0b61d8 100%);color:#fff;display:flex;gap:12px;align-items:center}
+    h1{margin:0;font-size:16px}
+    iframe{width:100%;height:100vh;border:0}
+  </style>
+  </head><body>
+  <header><div style="width:42px;height:42px;background:#fff;border-radius:8px;display:inline-block;margin-right:10px;"></div>
+  <h1>Epic Games — ${game.title}</h1></header>
+  <iframe src="${game.src}" allowfullscreen allow="autoplay; fullscreen; camera; gamepad; clipboard-write"
+  sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin allow-downloads"></iframe>
+  </body></html>`;
+
+  win.document.open(); win.document.write(html); win.document.close();
+});
+
+// Reload
+reloadBtn.addEventListener('click', () => {
+  if(!activeId) return alert('Select a class first');
+  const game = games.find(g => g.id === activeId);
+  if(!game) return;
+  frame.src = '';
+  setTimeout(() => frame.src = game.src, 60);
+});
+
+// Keyboard shortcut 'f' for fullscreen
+window.addEventListener('keydown', e => {
+  if(e.key === 'f') { e.preventDefault(); fullBtn.click(); }
+});
+
+// Auto-load featured game
+const featured = games.find(g => g.featured);
+if(featured) setTimeout(() => loadGame(featured), 250);
+</script>
