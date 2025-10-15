@@ -76,10 +76,16 @@ const games = [
   {id:'doom-1', title:'DOOM 1 (remake)', subtitle:'Classic shooter', src:'https://db.quackprep.org/html/doom_1/index.html'},
   {id:'eagler-craft', title:'Eagler Craft', subtitle:'Minecraft-style sandbox', src:'https://db.quackprep.org/html/minecraft/index.html'},
   {id:'bloons-td', title:'Bloons TD', subtitle:'Pop the waves', src:'https://db.quackprep.org/html/bloons_td/index.html'},
-  {id:'snow-rider', title:'Snow Rider 3D', subtitle:'Winter downhill run', src:'https://db.quackprep.org/html/snow_rider_3d/index.html'}
+  {id:'snow-rider', title:'Snow Rider 3D', subtitle:'Winter downhill run', src:'https://db.quackprep.org/html/snow_rider_3d/index.html'},
+
+  // 🆕 Added Games
+  {id:'world-guesser', title:'World Guesser', subtitle:'Google Streetview explorer', src:'https://www.google.com/maps/embed/v1/streetview?location=43.69248186183029,-79.5217461427877&key=AIzaSyA2fHNuyc768n9ZJLTrfbkWLNK3sLOK-iQ&fov=100&language=iw'},
+  {id:'russian-roulette', title:'Russian Roulette', subtitle:'Buckshot Roulette web', src:'https://db.quackprep.org/html/buckshot_roulette/index.html'},
+  {id:'pizza-tower', title:'Pizza Tower', subtitle:'Run, jump & deliver', src:'https://db.quackprep.org/html/pizza_tower/index.html'},
+  {id:'casino-blackjack', title:'Casino Blackjack', subtitle:'Play blackjack online', src:'https://games76ez.com/embed/blackjack.html'}
 ];
 
-// 🎃 Halloween Drop games
+// 🎃 Halloween Drop
 const halloweenGames = [
   {id:'forest-99', title:'Budget 99 Nights in the Forest', subtitle:'Explore the wild (Halloween drop)', src:'https://db.quackprep.org/html/99_nights_in_the_forest/index.html'},
   {id:'fnaf', title:'Five Nights at Freddy’s', subtitle:'Survive the night (Horror classic)', src:'https://db.quackprep.org/html/fnaf/index.html'}
@@ -127,7 +133,6 @@ weeklyGames.forEach(g => weeklyList.appendChild(makeGameItem(g)));
 
 async function loadGame(game) {
   if(activeId === game.id) return;
-
   document.querySelectorAll('.class.active').forEach(el => el.classList.remove('active'));
   placeholder.style.display = 'grid';
   frame.style.display = 'none';
