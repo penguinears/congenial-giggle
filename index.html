@@ -37,8 +37,8 @@
   <h2>Games</h2>
   <div id="gamesList"></div>
 
-  <h2>🎃 Halloween Drop</h2>
-  <div class="sectionList" id="halloweenList"></div>
+  <h2>🎄 Christmas Drop</h2>
+  <div class="sectionList" id="christmasList"></div>
 
   <h2>Weekly Game Drop</h2>
   <div class="sectionList" id="weeklyList"></div>
@@ -64,40 +64,57 @@
 
 <script>
 const games = [
-  {id:'clash-royale', title:'Clash Royale', subtitle:'Official remake', src:'https://db.quackprep.org/html/clash_royale/index.html'},
+  {id:'clash-royale', title:'Clash Royale', subtitle:'Official Ripoff!', src:'https://db.quackprep.org/html/clash_royale/index.html'},
   {id:'hollow-knight', title:'Hollow Knight', subtitle:'A platformer', src:'https://db.quackprep.org/html/hollow_knight/index.html'},
-  {id:'steal-brainrot', title:'Steal a Brainrot', subtitle:'(steal a brainrot)', src:'https://db.quackprep.org/html/steal_a_brainrot/index.html'},
+  {id:'steal-brainrot', title:'Steal a Brainrot', subtitle:'roblox copied us', src:'https://db.quackprep.org/html/steal_a_brainrot/index.html'},
   {id:'worlds-hardest', title:"The World's Hardest Game", subtitle:'Try not to rage', src:'https://db.quackprep.org/html/theworldshardestgame/index.html'},
-  {id:'twerk-race', title:'Twerk Race 3D', subtitle:'Race-y runner', src:'https://db.quackprep.org/html/twerk_race_3d/index.html'},
-  {id:'street-fighter', title:'Street Fighter', subtitle:'Retro fighting — Game of the Week', src:'https://db.quackprep.org/html/street_fighter/index.html', featured:true},
+  {id:'twerk-race', title:'Twerk Race 3D', subtitle:'i dont know what to say', src:'https://db.quackprep.org/html/twerk_race_3d/index.html'},
+  {id:'street-fighter', title:'Street Fighter', subtitle:'rip of street fighter', src:'https://db.quackprep.org/html/street_fighter/index.html'},
   {id:'temple-run', title:'Temple Run 2', subtitle:'Endless runner', src:'https://db.quackprep.org/html/temple_run_2/index.html'},
   {id:'rocket-league', title:'Rocket League (Derby)', subtitle:'Car football', src:'https://db.quackprep.org/html/rocket_soccer_derby/index.html'},
-  {id:'thorns-balloons', title:'Thorns & Balloons', subtitle:'Pop', src:'https://db.quackprep.org/html/thorns_and_ballons/index.html'},
   {id:'doom-1', title:'DOOM 1 (remake)', subtitle:'Classic shooter', src:'https://db.quackprep.org/html/doom_1/index.html'},
   {id:'eagler-craft', title:'Eagler Craft', subtitle:'Minecraft-style sandbox', src:'https://db.quackprep.org/html/minecraft/index.html'},
   {id:'bloons-td', title:'Bloons TD', subtitle:'Pop the waves', src:'https://db.quackprep.org/html/bloons_td/index.html'},
-  {id:'snow-rider', title:'Snow Rider 3D', subtitle:'Winter downhill run', src:'https://db.quackprep.org/html/snow_rider_3d/index.html'},
+  {id:'snow-rider', title:'Snow Rider 3D', subtitle:'super fun sledge gaem', src:'https://db.quackprep.org/html/snow_rider_3d/index.html'},
 
-  // 🆕 Added Games
-  {id:'world-guesser', title:'World Guesser', subtitle:'Google Streetview explorer', src:'https://www.google.com/maps/embed/v1/streetview?location=43.69248186183029,-79.5217461427877&key=AIzaSyA2fHNuyc768n9ZJLTrfbkWLNK3sLOK-iQ&fov=100&language=iw'},
-  {id:'russian-roulette', title:'Russian Roulette', subtitle:'Buckshot Roulette web', src:'https://db.quackprep.org/html/buckshot_roulette/index.html'},
-  {id:'pizza-tower', title:'Pizza Tower', subtitle:'Run, jump & deliver', src:'https://db.quackprep.org/html/pizza_tower/index.html'},
-  {id:'casino-blackjack', title:'Casino Blackjack', subtitle:'Play blackjack online', src:'https://games76ez.com/embed/blackjack.html'}
+  {id:'forest-99', title:'Budget 99 Nights in the Forest', subtitle:'Explore the wild', src:'https://db.quackprep.org/html/99_nights_in_the_forest/index.html'},
+  {id:'fnaf', title:'Five Nights at Freddy’s', subtitle:'Survive the night', src:'https://db.quackprep.org/html/fnaf/index.html'},
+
+  {
+    id:'gta-simulator',
+    title:'GTA Simulator',
+    subtitle:'iggle before gta6',
+    src:'https://r2.fizzerz.com/game-source/gta-simulator/index.html'
+  }
 ];
 
-// 🎃 Halloween Drop
-const halloweenGames = [
-  {id:'forest-99', title:'Budget 99 Nights in the Forest', subtitle:'Explore the wild (Halloween drop)', src:'https://db.quackprep.org/html/99_nights_in_the_forest/index.html'},
-  {id:'fnaf', title:'Five Nights at Freddy’s', subtitle:'Survive the night (Horror classic)', src:'https://db.quackprep.org/html/fnaf/index.html'}
+const christmasGames = [
+  {
+    id:'christmas-drop',
+    title:'Christmas Drop',
+    subtitle:'Seasonal winter game',
+    src:'https://app-98524.games.s3.yandex.net/98524/e90pl68o7uv7ra70v9wnuobstic38e2g_brotli/index.html'
+  }
 ];
 
-// 🌟 Weekly Game Drop
 const weeklyGames = [
-  {id:'animal-crossing', title:'Animal Crossing', subtitle:'Chill and build your town', src:'https://db.quackprep.org/html/animal_crossing/index.html'}
+  {
+    id:'fallout',
+    title:'Fallout',
+    subtitle:'Bro forced me — Game of the Week',
+    src:'https://glacierarcade.win/storage/fallout.html',
+    featured:true
+  },
+  {
+    id:'tentrix',
+    title:'tentrix',
+    subtitle:'just blockblast xd',
+    src:'https://games.builds.gamepix.com/78U4MT/2wKz6qwHSKfXzm4QgwaH0AVLwuY/index.html?sid=e4515&lang=en&namespace=bullet-army-run'
+  }
 ];
 
 const gamesList = document.getElementById('gamesList');
-const halloweenList = document.getElementById('halloweenList');
+const christmasList = document.getElementById('christmasList');
 const weeklyList = document.getElementById('weeklyList');
 const frame = document.getElementById('gameFrame');
 const placeholder = document.getElementById('placeholder');
@@ -121,14 +138,13 @@ function makeGameItem(game) {
     </div>
     <div><button class="play-btn">Play</button></div>
   `;
-  el.querySelector('.play-btn').addEventListener('click', e => { e.stopPropagation(); loadGame(game); });
-  el.addEventListener('click', () => loadGame(game));
+  el.querySelector('.play-btn').onclick = e => { e.stopPropagation(); loadGame(game); };
+  el.onclick = () => loadGame(game);
   return el;
 }
 
-// Fill all sections
 games.forEach(g => gamesList.appendChild(makeGameItem(g)));
-halloweenGames.forEach(g => halloweenList.appendChild(makeGameItem(g)));
+christmasGames.forEach(g => christmasList.appendChild(makeGameItem(g)));
 weeklyGames.forEach(g => weeklyList.appendChild(makeGameItem(g)));
 
 async function loadGame(game) {
@@ -137,68 +153,38 @@ async function loadGame(game) {
   placeholder.style.display = 'grid';
   frame.style.display = 'none';
   frame.src = '';
-
   await new Promise(r => setTimeout(r, 80));
   frame.src = game.src;
   frame.style.display = 'block';
   placeholder.style.display = 'none';
-
   activeId = game.id;
-  playerTitle.textContent = game.title + (game.featured ? ' — Game of the Week' : '');
+  playerTitle.textContent = game.title;
   playerSub.textContent = game.subtitle;
   const el = document.querySelector(`[data-id="${game.id}"]`);
   if(el) el.classList.add('active');
-  frame.onload = () => { try { frame.contentWindow.focus(); } catch(e) {} };
 }
 
-fullBtn.addEventListener('click', async () => {
-  try {
-    if(document.fullscreenElement) await document.exitFullscreen();
-    else await frameWrap.requestFullscreen();
-  } catch(e){}
-});
+fullBtn.onclick = async () => {
+  if(document.fullscreenElement) await document.exitFullscreen();
+  else await frameWrap.requestFullscreen();
+};
 
-openNewBtn.addEventListener('click', () => {
+openNewBtn.onclick = () => {
   if(!activeId) return alert('Select a game first');
-  const allGames = [...games, ...halloweenGames, ...weeklyGames];
-  const game = allGames.find(g => g.id === activeId);
-  if(!game) return;
-  const win = window.open('', '_blank');
-  if(!win) return alert('Popup blocked — allow popups for this site');
+  const all = [...games, ...christmasGames, ...weeklyGames];
+  const game = all.find(g => g.id === activeId);
+  window.open(game.src, '_blank');
+};
 
-  const html = `<!doctype html><html><head><meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Iggle — ${game.title}</title>
-  <style>
-    body{margin:0;font-family:Inter,system-ui,Arial;background:#f6fbff;color:#072a46}
-    header{padding:12px 16px;background:linear-gradient(90deg,#1877f2 0%,#0b61d8 100%);color:#fff;display:flex;gap:12px;align-items:center}
-    h1{margin:0;font-size:16px}
-    iframe{width:100%;height:100vh;border:0}
-    button{background:#fff;color:#1877f2;border:none;padding:6px 12px;border-radius:6px;font-weight:600;cursor:pointer;}
-  </style>
-  </head><body>
-  <header><button onclick="history.back()">⬅ Back</button><h1>Iggle — ${game.title}</h1></header>
-  <iframe src="${game.src}" allowfullscreen allow="autoplay; fullscreen; camera; gamepad; clipboard-write"
-  sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin allow-downloads"></iframe>
-  </body></html>`;
-
-  win.document.open(); win.document.write(html); win.document.close();
-});
-
-reloadBtn.addEventListener('click', () => {
-  if(!activeId) return alert('Select a game first');
-  const allGames = [...games, ...halloweenGames, ...weeklyGames];
-  const game = allGames.find(g => g.id === activeId);
-  if(!game) return;
+reloadBtn.onclick = () => {
+  if(!activeId) return;
+  const all = [...games, ...christmasGames, ...weeklyGames];
+  const game = all.find(g => g.id === activeId);
   frame.src = '';
   setTimeout(() => frame.src = game.src, 60);
-});
+};
 
-window.addEventListener('keydown', e => {
-  if(e.key === 'f') { e.preventDefault(); fullBtn.click(); }
-});
-
-const featured = games.find(g => g.featured);
+const featured = weeklyGames.find(g => g.featured);
 if(featured) setTimeout(() => loadGame(featured), 250);
 </script>
 
